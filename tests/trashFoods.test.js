@@ -1,66 +1,67 @@
 const { chromium } = require('playwright');
-const ClientePage = require('../pages/ClientePage');
+const OrderPage = require('../pages/OrderPage');
+const FoodPage = require('../pages/FoodPage');
 const ClienteData = require('../data/ClienteData');
+const FoodData = require('../data/FoodData')
 
 describe(`Testes e2e com Playwright`, () => {
-    let cliente = new ClientePage;
-    let data = new ClienteData();
-
+    const user = new ClienteData();
+    const cardapio = new FoodData();
     jest.setTimeout(10000);
 
     let browser = null;
     let page = null;
     let context = null;
+    let cliente = null;
+    let food = null;
 
     beforeAll(async () => {
         browser = await chromium.launch({ headless: false });
         context = await browser.newContext();
         page = await context.newPage();
-        await page.goto('https://enjoeat.herokuapp.com/');
+        cliente = new OrderPage(page);
+        food = new FoodPage(page);
+        await food.navigate();
+        await cliente.navigate();        
     });
 
     afterAll(async () => {
+        await context.close();
         await browser.close();
     });
 
     test(`Deve escolher o Trash Food`, async () => {
-        await page.click('text=Restaurantes');
+        await food.goFoodPage();
 
-        await page.click('text=Burger House');
+        await food.chooseFood();
 
-        await page.click('text=Classic Burger O clássico. Não tem como errar. R$ 18,50 >> .add-to-cart');
+        var burgerHouse = [
+            await page.click(cardapio.foods.burger),
+            await page.click(cardapio.foods.fritas),
+            await page.click(cardapio.foods.refri)
+        ];
 
-        await page.click('text=Batatas Fritas Batatas fritas crocantes R$ 5,50 Adicionar >> .add-to-cart');
+        burgerHouse.forEach(foods => {
+            foods;
+        });
 
-        await page.click('text=Refrigerante O refri mais gelado da cidade. R$ 4,50 Adicionar >> .add-to-cart');
-
-        await page.click('text=Fechar Pedido');
-
+        await food.goPayFood();
     });
 
     test('Deve informar os dados', async () => {
-        await cliente.userName(data.user.nome);
-        // await page.fill('[placeholder="Nome"]', data.user.nome);
+        await cliente.userInformation(user.nome(), user.email(), user.confirmacao());
 
-        await page.fill('[placeholder="E-mail"]', data.user.email);
-
-        await page.fill('[placeholder="Confirmação do e-mail"]', data.user.email);
-
-        await page.fill('[placeholder="Endereço"]', data.adress.endereco);
-
-        await page.fill('[placeholder="Número"]', data.adress.numero);
+        await cliente.userAdress(user.endereco(), user.numero());
     });
 
-    test('Deve fazer o pagamento', async () => {
-        await page.click('.iCheck-helper >> nth=0');
-        await Promise.all([
-            page.waitForNavigation(),
-            page.click('text=Concluir Pedido')
-        ]);
+    test('Deve escolher a forma de pagamento', async () => {
+        await cliente.userPayMoney();       
     });
 
     test('Deve concluir o pedido', async () => {
-        await page.click('text=Pedido Conluído');
-
+        await Promise.all([
+            page.waitForNavigation(),
+            await cliente.userFinishOrder()
+        ]);
     });
 });

@@ -1,13 +1,28 @@
 class ClienteData {
 
-    user = {
-        nome: "Joe Satriani",
-        email: "joe@mail.com"       
-    } 
-    
-    adress = {
-        endereco: "Six Strings",
-        numero: "789"
+    nome(nome){
+        nome = "Joe Satriani"
+        return nome
+    }
+
+    email(email){
+        email = "joe@mail.com"
+        return email
+    }
+
+    confirmacao(confirmacao){
+        confirmacao = "joe@mail.com"
+        return confirmacao
+    }
+
+    endereco(endereco){
+        endereco = "Six Strings"
+        return endereco
+    }
+
+    numero(numero){
+        numero = "789"
+        return numero
     }
 };
 
