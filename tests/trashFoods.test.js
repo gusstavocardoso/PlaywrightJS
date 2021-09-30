@@ -2,18 +2,18 @@ const { chromium } = require('playwright');
 const OrderPage = require('../pages/OrderPage');
 const FoodPage = require('../pages/FoodPage');
 const ClienteData = require('../data/ClienteData');
-const FoodData = require('../data/FoodData')
+const FoodData = require('../data/FoodData');
 
 describe(`Testes e2e com Playwright`, () => {
     const user = new ClienteData();
     const cardapio = new FoodData();
     jest.setTimeout(10000);
 
-    let browser = null;
-    let page = null;
-    let context = null;
-    let cliente = null;
-    let food = null;
+    let browser;
+    let page;
+    let context;
+    let cliente;
+    let food;
 
     beforeAll(async () => {
         browser = await chromium.launch({ headless: false });
@@ -22,7 +22,7 @@ describe(`Testes e2e com Playwright`, () => {
         cliente = new OrderPage(page);
         food = new FoodPage(page);
         await food.navigate();
-        await cliente.navigate();        
+        await cliente.navigate();
     });
 
     afterAll(async () => {
@@ -32,6 +32,8 @@ describe(`Testes e2e com Playwright`, () => {
 
     test(`Deve escolher o Trash Food`, async () => {
         await food.goFoodPage();
+        const restaurantes = await page.innerText('h1');
+        expect(restaurantes).toBe('Todos os Restaurantes');
 
         await food.chooseFood();
 
@@ -44,7 +46,7 @@ describe(`Testes e2e com Playwright`, () => {
         burgerHouse.forEach(foods => {
             foods;
         });
-
+              
         await food.goPayFood();
     });
 
@@ -55,7 +57,7 @@ describe(`Testes e2e com Playwright`, () => {
     });
 
     test('Deve escolher a forma de pagamento', async () => {
-        await cliente.userPayMoney();       
+        await cliente.userPayMoney();
     });
 
     test('Deve concluir o pedido', async () => {
@@ -63,5 +65,8 @@ describe(`Testes e2e com Playwright`, () => {
             page.waitForNavigation(),
             await cliente.userFinishOrder()
         ]);
+
+        const finsihOrder = await page.textContent('h2');
+        expect(finsihOrder).toBe('Pedido Conluído');
     });
 });
