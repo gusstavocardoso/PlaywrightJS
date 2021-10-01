@@ -4,7 +4,7 @@ const FoodPage = require('../pages/FoodPage');
 const ClienteData = require('../data/ClienteData');
 const FoodData = require('../data/FoodData');
 
-describe(`Testes e2e com Playwright`, () => {
+describe(`Desvendando testes e2e com Playwright`, () => {
     const user = new ClienteData();
     const cardapio = new FoodData();
     jest.setTimeout(10000);
@@ -30,8 +30,9 @@ describe(`Testes e2e com Playwright`, () => {
         await browser.close();
     });
 
-    test(`Deve escolher o Trash Food`, async () => {
+    test(`Deve escolher o trash food`, async () => {
         await food.goFoodPage();
+        
         const restaurantes = await page.innerText('h1');
         expect(restaurantes).toBe('Todos os Restaurantes');
 
@@ -51,19 +52,19 @@ describe(`Testes e2e com Playwright`, () => {
     });
 
     test('Deve informar os dados', async () => {
-        await cliente.userInformation(user.nome(), user.email(), user.confirmacao());
+        await cliente.personalInformation(user.nome(), user.email(), user.confirmacao());
 
-        await cliente.userAdress(user.endereco(), user.numero());
+        await cliente.adress(user.endereco(), user.numero());
     });
 
     test('Deve escolher a forma de pagamento', async () => {
-        await cliente.userPayMoney();
+        await cliente.payMoney();
     });
 
     test('Deve concluir o pedido', async () => {
         await Promise.all([
             page.waitForNavigation(),
-            await cliente.userFinishOrder()
+            await cliente.finishOrder()
         ]);
 
         const finsihOrder = await page.textContent('h2');

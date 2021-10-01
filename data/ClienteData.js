@@ -6,12 +6,12 @@ class ClienteData {
     }
 
     email(email){
-        email = "joe@mail.com"
+        email = "joe.satriani@guitar.com"
         return email
     }
 
     confirmacao(confirmacao){
-        confirmacao = "joe@mail.com"
+        confirmacao = "joe.satriani@guitar.com"
         return confirmacao
     }
 

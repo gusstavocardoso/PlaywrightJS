@@ -6,22 +6,22 @@ class OrderPage extends BaseTest{
         super(page);
     }
 
-    async userInformation(nome, email, confirmacao){
+    async personalInformation(nome, email, confirmacao){
         await this.page.fill('[placeholder="Nome"]', nome);
         await this.page.fill('[placeholder="E-mail"]', email);
         await this.page.fill('[placeholder="Confirmação do e-mail"]', confirmacao);
     }
 
-    async userAdress(endereco, numero){
+    async adress(endereco, numero){
         await this.page.fill('[placeholder="Endereço"]', endereco);
         await this.page.fill('[placeholder="Número"]', numero);
     }
 
-    async userPayMoney(){
+    async payMoney(){
         await this.page.click('.iCheck-helper >> nth=0');
     }
 
-    async userFinishOrder(){
+    async finishOrder(){
         await this.page.click('text=Concluir Pedido');
     }
 };
