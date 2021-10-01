@@ -1,28 +1,31 @@
 class ClienteData {
 
-    nome(nome){
-        nome = "Joe Satriani"
-        return nome
+    cliente = {
+        nome: "Joe Satriani",
+        email: "joe.satriani@guitar.com",
+        confirmacao: "joe.satriani@guitar.com",
+        endereco: "Six Strings",
+        numero: "789"
     }
 
-    email(email){
-        email = "joe.satriani@guitar.com"
-        return email
+    nome(){
+        return this.cliente.nome
     }
 
-    confirmacao(confirmacao){
-        confirmacao = "joe.satriani@guitar.com"
-        return confirmacao
+    email(){
+        return this.cliente.email
     }
 
-    endereco(endereco){
-        endereco = "Six Strings"
-        return endereco
+    confirmacao(){
+        return this.cliente.confirmacao
     }
 
-    numero(numero){
-        numero = "789"
-        return numero
+    endereco(){
+        return this.cliente.endereco
+    }
+
+    numero(){
+        return this.cliente.numero
     }
 };
 
